@@ -139,6 +139,51 @@ function filteredByContinents(data = data_loaded) {
 }
 
 
+function groupedByContinents(data = data_loaded) {
+
+    var agg = d3.select('input[name="aggregate"]:checked').node().value;
+
+    if (agg === 'default') {
+        return data;
+    } else {
+        rowsByContinents = d3.nest()
+            .key(function (d) {
+                return d.continent
+            })
+            .rollup(function (d) {
+                return {
+                    'name': d[0].continent,
+                    'continent': d[0].continent,
+                    'gdp': d3.sum(d, function (g) {
+                        return +g.gdp;
+                    }),
+                    'life_expectancy': d3.mean(d, function (g) {
+                        return g.life_expectancy;
+                    }),
+                    'population': d3.sum(d, function (g) {
+                        return g.population;
+                    }),
+                    'year': d[0].year
+                };
+
+            })
+            .entries(data);
+
+        return asArray(rowsByContinents);
+    }
+
+}
+
+function asArray(groups) {
+    values = [];
+
+    for (let i = 0; i < groups.length; i++) {
+        values.push(groups[i].value);
+    }
+
+    return values;
+}
+
 function updateTableContent(data) {
     tbody = d3.select('tbody');
     rows = tbody.selectAll("tr.row")
@@ -167,4 +212,8 @@ d3.json("data/countries_2012.json", function (error, data) {
 
 d3.selectAll("input[type=checkbox]").on("change", function () {
     updateTableContent(filteredByContinents(data_loaded));
+});
+
+d3.selectAll('input[name="aggregate"]').on("change", function () {
+    updateTableContent(groupedByContinents(data_loaded));
 });
