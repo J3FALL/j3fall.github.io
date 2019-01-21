@@ -108,7 +108,7 @@ function table(data) {
 }
 
 
-const fillCells = function (row, i) {
+fillCells = function (row, i) {
     return columns.map(function (c) {
         var cell = {};
         d3.keys(c).forEach(function (k) {
@@ -118,6 +118,53 @@ const fillCells = function (row, i) {
     });
 };
 
+
+function filteredByContinents(data = data_loaded) {
+    choices = [];
+    d3.selectAll("input[type=checkbox]").each(function (d) {
+        cb = d3.select(this);
+        if (cb.property("checked")) {
+            choices.push(cb.property("value"));
+        }
+    });
+
+    if (choices.length > 0) {
+        filteredData = data.filter(function (d, i) {
+            return choices.includes(d.continent);
+        });
+    } else {
+        filteredData = data_loaded;
+    }
+    return filteredData;
+}
+
+
+function updateTableContent(data) {
+    tbody = d3.select('tbody');
+    rows = tbody.selectAll("tr.row")
+        .data(data);
+    rows.exit().remove();
+    rows = rows
+        .enter()
+        .append("tr")
+        .attr("class", "row")
+        .merge(rows);
+    cells = rows.selectAll("td")
+        .data(fillCells);
+    cells.exit()
+        .remove();
+    cells = cells.enter()
+        .append("td");
+    tbody.selectAll("td")
+        .html(f("html"))
+        .attr("class", f("cl"));
+}
+
 d3.json("data/countries_2012.json", function (error, data) {
+    data_loaded = data;
     table(data);
+});
+
+d3.selectAll("input[type=checkbox]").on("change", function () {
+    updateTableContent(filteredByContinents(data_loaded));
 });

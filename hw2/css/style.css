@@ -1,8 +1,17 @@
+div.utils_container {
+    padding: 2%;
+}
+
 th, td.center {
     text-align: center;
 }
 
-table, th, td, caption {
+table, th, td {
+    border: 1px solid black;
+    margin-left: 2%;
+}
+
+caption {
     border: 1px solid black;
 }
 

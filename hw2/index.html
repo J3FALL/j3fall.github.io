@@ -5,7 +5,35 @@
     <link rel='stylesheet' href='css/style.css'>
 </head>
 <body>
-    <h1></h1>
+<div class="utils_container">
+    <div class="slider_container">
+        <span>Time update:</span>
+        <label class="year_label">1995</label>
+        <input type='range' min='1995' max='2012' value='2000'
+               step='1' class='slider'>
+        <label class="year_label">2012</label>
+    </div>
+    <div id="continent_filter">
+        <span>Filter by:</span>
+        <input type='checkbox' name='america' value="Americas" onchange="filteredByContinents()">
+        <span>Americas</span>
+        <input type='checkbox' name='africa' value="Africa" onchange="filteredByContinents()">
+        <span>Africa</span>
+        <input type='checkbox' name='asia' value="Asia" onchange="filteredByContinents()">
+        <span>Asia</span>
+        <input type='checkbox' name='europe' value="Europe" onchange="filteredByContinents()">
+        <span>Europe</span>
+        <input type='checkbox' name='oceania' value="Oceania" onchange="filteredByContinents()">
+        <span>Oceania</span>
+    </div>
+    <div class="radio">
+        <span>Aggregate by:</span>
+        <input type="radio" name="aggregate" value="noagg" checked>
+        <span>None</span>
+        <input type='radio' name="aggregate" value="agg">
+        <span>Continent</span>
+    </div>
+</div>
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="js/table.js"></script>
 </body>
