@@ -1,0 +1,31 @@
+th, td.center {
+    text-align: center;
+}
+
+table, th, td, caption {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.5ex 1em 0.5ex 1em;
+}
+
+tr:nth-child(even) {
+    background-color: lightgrey;
+}
+
+tr:hover {
+    background-color: lightyellow;
+}
+
+th.des:after {
+    content: "\21E9";
+}
+
+th.aes:after {
+    content: "\21E7";
+}
