@@ -205,15 +205,39 @@ function updateTableContent(data) {
         .attr("class", f("cl"));
 }
 
-d3.json("data/countries_2012.json", function (error, data) {
+function dataByYear(data) {
+    var yearSelected = d3.select('input[type=range]').node().valueAsNumber;
+
+    yearIndex = yearSelected - 1995;
+    console.log(yearSelected);
+    ;
+
+    return data.map(function (row) {
+        return {
+            'name': row.name,
+            'continent': row.continent,
+            'gdp': row.years[yearIndex]["gdp"],
+            'life_expectancy': row.years[yearIndex]['life_expectancy'],
+            'population': row.years[yearIndex]['population'],
+            'year': yearSelected
+        }
+    })
+}
+
+d3.json("data/countries_1995_2012.json", function (error, data) {
     data_loaded = data;
-    table(data);
+    table(dataByYear(data));
 });
 
 d3.selectAll("input[type=checkbox]").on("change", function () {
-    updateTableContent(filteredByContinents(data_loaded));
+    updateTableContent(filteredByContinents(dataByYear(data_loaded)));
 });
 
 d3.selectAll('input[name="aggregate"]').on("change", function () {
-    updateTableContent(groupedByContinents(data_loaded));
+    updateTableContent(groupedByContinents(dataByYear(data_loaded)));
+});
+
+
+d3.selectAll("input[type=range]").on("change", function () {
+    updateTableContent(groupedByContinents(dataByYear(data_loaded)));
 });
