@@ -95,7 +95,6 @@ function barchartParams(data) {
 
     params['min'] = 0;
     params['max'] = d3.max(data, function (d) {
-        console.log(d);
         return d[params['encoder']];
     });
 
@@ -115,10 +114,6 @@ function selectedInputParams() {
         'sortBy': d3.select('input[name=sort]:checked').node().value
     };
     return params;
-
-    // if (aggVar === "continent" && sortVar === "Name") {
-    //     sortVar = "Continent"
-    // }
 }
 
 function barchart(data) {
@@ -132,6 +127,18 @@ function barchart(data) {
     svg.append("g")
         .call(barParams['yAxis']);
 
+
+    if (inputParams['sortBy'] === 'name') {
+        data.sort(function (x, y) {
+            return d3.ascending(x[inputParams['sortBy']], y[inputParams['sortBy']]);
+        });
+    } else {
+        data.sort(function (x, y) {
+            return d3.descending(x[inputParams['sortBy']], y[inputParams['sortBy']]);
+        });
+    }
+
+
     var bar = svg.selectAll('g')
         .data(data)
         .enter()
@@ -140,7 +147,7 @@ function barchart(data) {
             return "translate(0," + i * barParams['barH'] + ")";
         });
 
-    console.log(barParams);
+
     bar.append('rect').transition().duration(300)
         .attr('width', function (d) {
             return barParams['xScale'](d[barParams['encoder']]);
@@ -151,7 +158,69 @@ function barchart(data) {
 
     bar.append('text')
         .text(function (d) {
-            return d[inputParams['sortBy']]
+            return d['name']
+        })
+        .attr('y', function (d, i) {
+            return i + 9;
+        })
+        .attr('class', 'lable');
+
+    bar.selectAll("text")
+        .attr("dx", "30px");
+
+    var t = d3.selectAll('rect');
+    t.attr("fill", function (d, i) {
+        return colors(i);
+    });
+    d3.selectAll("path.domain").remove();
+
+}
+
+function updateBarchartContent(data) {
+    d3.select("svg")
+        .selectAll("g")
+        .remove();
+
+    barParams = barchartParams(data);
+    inputParams = selectedInputParams();
+
+    var svg = d3.select("svg");
+
+    svg
+        .attr('width', barParams['width'] + barParams['margin'].left + barParams['margin'].right)
+        .attr('height', barParams['yScale'].range()[1] + 25 + 'px');
+
+    svg.append("g")
+        .call(barParams['yAxis']);
+
+    if (inputParams['sortBy'] === 'name') {
+        data.sort(function (x, y) {
+            return d3.ascending(x[inputParams['sortBy']], y[inputParams['sortBy']]);
+        });
+    } else {
+        data.sort(function (x, y) {
+            return d3.descending(x[inputParams['sortBy']], y[inputParams['sortBy']]);
+        });
+    }
+
+    var bar = svg.selectAll('g')
+        .data(data)
+        .enter()
+        .append('g')
+        .attr('transform', function (d, i) {
+            return "translate(0," + i * barParams['barH'] + ")";
+        });
+
+    bar.append('rect').transition().duration(300)
+        .attr('width', function (d) {
+            return barParams['xScale'](d[barParams['encoder']]);
+        })
+        .attr('height', barParams['barH'] - 2)
+        .attr('x', 300);
+
+    bar.append('text')
+        .text(function (d) {
+            return d['name']
         })
         .attr('y', function (d, i) {
             return i + 9;
@@ -179,7 +248,17 @@ function colors(n) {
 
 d3.json("data/countries_1995_2012.json", function (error, data) {
     data_loaded = data;
-
     barchart(filteredByContinents(groupedByContinents(dataByYear(data_loaded))));
-    //table(dataByYear(data));
+});
+
+
+d3.selectAll("input[type=checkbox]").on("change", function () {
+    updateBarchartContent(filteredByContinents(groupedByContinents(dataByYear(data_loaded))));
+});
+
+d3.selectAll("input[type=radio]").on("change", function () {
+    updateBarchartContent(filteredByContinents(groupedByContinents(dataByYear(data_loaded))));
+});
+d3.selectAll("input[type=range]").on("change", function () {
+    updateBarchartContent(filteredByContinents(groupedByContinents(dataByYear(data_loaded))));
 });
