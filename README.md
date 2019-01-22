@@ -9,3 +9,5 @@ pavel.vychuzhanin@gmail.com
 
 [Homework 2. Table](http://j3fall.github.io/hw2/index)
 
+[Homework 2. Barchart](http://j3fall.github.io/hw2/barchart)
+
