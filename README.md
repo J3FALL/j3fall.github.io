@@ -7,5 +7,5 @@ pavel.vychuzhanin@gmail.com
 
 [Homework 1](http://j3fall.github.io/hw1/)
 
-[Homework 2. Table](http://j3fall.github.io/hw2/)
+[Homework 2. Table](http://j3fall.github.io/hw2/index)
 
