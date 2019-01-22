@@ -209,8 +209,6 @@ function dataByYear(data) {
     var yearSelected = d3.select('input[type=range]').node().valueAsNumber;
 
     yearIndex = yearSelected - 1995;
-    console.log(yearSelected);
-    ;
 
     return data.map(function (row) {
         return {
