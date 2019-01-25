@@ -4,6 +4,13 @@
     fill: #d9d9d9;
 }
 
+.map-grid {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: .1;
+    stroke-dasharray: 2, 1;
+}
+
 .legend-element {
     width: 15px;
     height: 15px;

@@ -5,7 +5,6 @@ class Map {
      */
     constructor() {
         this.projection = d3.geoConicConformal().scale(150).translate([400, 350]);
-
     }
 
     /**
@@ -62,14 +61,29 @@ class Map {
 
         // ******* TODO: PART IV *******
 
-        // Draw the background (country outlines; hint: use #map)
-        // Make sure and add gridlines to the map
+        console.log(world);
+        var geoGenerator = d3.geoPath()
+            .projection(this.projection);
+        var map = d3.select('#map')
+            .attr('width', 1000)
+            .attr('height', 500);
 
-        // Hint: assign an id to each country path to make it easier to select afterwards
-        // we suggest you use the variable in the data element's .id field to set the id
+        console.log("1");
+        map.selectAll('path')
+            .data(topojson.feature(world, world.objects.countries).features)
+            .enter()
+            .append('path')
+            .attr('class', 'countries')
+            .attr('id', function (d) {
+                return d.id;
+            })
+            .attr('d', geoGenerator);
 
-        // Make sure and give your paths the appropriate class (see the .css selectors at
-        // the top of the provided html file)
+        map.append('path')
+            .datum(d3.geoGraticule().stepMinor([10, 10]))
+            .attr('id', 'grid')
+            .attr('class', 'map-grid')
+            .attr('d', geoGenerator);
 
     }
 

@@ -128,22 +128,8 @@ class BarChart {
         // ******* TODO: PART I *******
         //Changed the selected data when a user selects a different
         // menu item from the drop down.
-        console.log(this);
-        barChart.infoPanel.updateInfo(data);
-        barChart.worldMap.updateMap(data);
 
-        console.log(data[selectedDimension]);
-        // d3.select('.selected')
-        //     .classed('selected', false)
-        //     .style('fill', function (d) {
-        //         return color(d[selectedDimension])
-        //     });
-
-        d3.select(this)
-            .classed('bar', false)
-            .classed('selected', true)
-            .style('fill', '#d20a11');
-
+        // see highlightSelected()
     }
 
     highlightSelected(rect) {
