@@ -13,4 +13,6 @@ pavel.vychuzhanin@gmail.com
 
 [Homework 3. Part 1](http://j3fall.github.io/hw3/part1/hw3)
 
+[Homework 3. Part 2](http://j3fall.github.io/hw3/part2/hw2)
+
 
