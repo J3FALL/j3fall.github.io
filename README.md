@@ -11,3 +11,6 @@ pavel.vychuzhanin@gmail.com
 
 [Homework 2. Barchart](http://j3fall.github.io/hw2/barchart)
 
+[Homework 3. Part 1](http://j3fall.github.io/hw3/part1/hw3)
+
+
