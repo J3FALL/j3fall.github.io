@@ -42,20 +42,13 @@ d3.csv("data/fifa-world-cup.csv", function (error, allData) {
  *  There are 4 attributes that can be selected:
  *  goals, matches, attendance and teams.
  */
-function chooseData(data) {
+function chooseData() {
 
-    dimension = d3.select("#dataset").property("value");
-    console.log(dimension);
-
-    barChart.updateBarChart(dimension);
     // ******* TODO: PART I *******
     // Changed the selected data when a user selects a different
     // menu item from the drop down.
 
-}
+    selectedDimension = d3.select('#dataset').property('value');
+    barChart.updateBarChart(selectedDimension);
 
-function colorRange(maxValue) {
-    return d3.scaleLinear()
-        .domain([0, maxValue])
-        .range([d3.rgb("#95B4E2"), d3.rgb('#092D62')]);
 }

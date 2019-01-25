@@ -70,41 +70,55 @@ class BarChart {
             .call(yAxis);
 
 
+        window.color = colorRange(max);
+
         d3.select('.selected')
-        // classed for css add/removal
             .classed('selected', false)
             .classed('bar', true)
             .style('fill', function (d) {
-                return colorRange(d[selectedDimension])
+                return color(d[selectedDimension])
             });
 
-        var bars = svg.select('#bars').selectAll('rect.bar')
-            .data(this.allData)
-            .enter().append('rect')
-            .attr('class', 'bar')
-            .attr('width', yWidth)
-            .attr('height', function (d) {
-                return h - margin.top - margin.bottom - yScale(d[selectedDimension]);
-            })
-            .attr('x', function (d) {
-                return (margin.left + xScale(d.year));
-            })
-            .attr('y', function (d) {
-                return xScale(d[selectedDimension]);
-            })
-            .style('fill', function (d) {
-                return colorRange(d[selectedDimension])
-            })
-            .on("click", barChart.chooseData)
+        renderBarsWithAnimation(this);
 
-        // Create the x and y scales; make
-        // sure to leave room for the axes
+        function renderBarsWithAnimation(barChart) {
+            svg.select('#bars').selectAll('rect.bar')
+                .data(barChart.allData)
+                .enter().append('rect')
+                .attr('class', 'bar')
+                .attr('width', yWidth)
+                .attr('height', function (d) {
+                    return h - margin.top - margin.bottom - yScale(d[selectedDimension]);
+                })
+                .attr('x', function (d) {
+                    return (margin.left + xScale(d.year));
+                })
+                .attr('y', function (d) {
+                    return xScale(d[selectedDimension]);
+                })
+                .style('fill', function (d) {
+                    return color(d[selectedDimension])
+                })
+                .on("click", barChart.chooseData);
 
-        // Create colorScale
-
-        // Create the axes (hint: use #xAxis and #yAxis)
-
-        // Create the bars (hint: use #bars)
+            //do it another time just to animate
+            svg.select('#bars').selectAll('rect.bar')
+                .transition().duration(300)
+                .attr('class', 'bar')
+                .attr('width', yWidth)
+                .attr('height', function (d) {
+                    return h - margin.top - margin.bottom - yScale(d[selectedDimension]);
+                })
+                .attr('x', function (d) {
+                    return (margin.left + xScale(d.year));
+                })
+                .attr('y', function (d) {
+                    return yScale(d[selectedDimension]);
+                })
+                .style('fill', function (d) {
+                    return color(d[selectedDimension])
+                });
+        }
 
 
         // ******* TODO: PART II *******
@@ -125,10 +139,25 @@ class BarChart {
      *  There are 4 attributes that can be selected:
      *  goals, matches, attendance and teams.
      */
-    chooseData() {
+    chooseData(data) {
         // ******* TODO: PART I *******
         //Changed the selected data when a user selects a different
         // menu item from the drop down.
+        //infoPanel.updateInfo(data);
+        //worldMap.updateMap(data);
+        console.log(data[selectedDimension]);
+        d3.select('.selected')
+        // classed for css add/removal
+        //.classed('bar', true)
+            .classed('selected', false)
+            .style('fill', function (d) {
+                return color(d[selectedDimension])
+            });
+
+        d3.select(this)
+            .classed('bar', false)
+            .classed('selected', true)
+            .style('fill', '#d20a11');
 
     }
 }
