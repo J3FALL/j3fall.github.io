@@ -12,7 +12,7 @@ th {
     min-width: 125px;
 }
 
-thead td , th{
+thead td, th {
     cursor: s-resize;
 }
 
@@ -20,16 +20,16 @@ tbody tr:first-child td {
     padding-top: 2px;
 }
 
-tbody th{
-    cursor:pointer;
+tbody th {
+    cursor: pointer;
     font-weight: bold;
 }
 
-.aggregate{
+.aggregate {
     color: #317f19;
 }
 
-.game{
+.game {
     color: #b1b1b1;
 }
 
@@ -37,7 +37,7 @@ tbody td {
     padding-right: 5px;
     padding-left: 5px;
     border-left: solid 1px #000;
-    color:black
+    color: black
 }
 
 tbody tr:hover {
@@ -49,10 +49,10 @@ tbody tr .game {
 }
 
 /*tbody tr .game:hover {*/
-    /*background-color: #dbdbdb;*/
+/*background-color: #dbdbdb;*/
 /*}*/
 
-.label{
+.label {
     fill: #ffffff;
     font: 14px sans-serif;
 }
@@ -63,7 +63,7 @@ tbody tr .game {
 }
 
 @font-face {
-    font-family:'brazil';
+    font-family: 'brazil';
     src: url('assets/brasil_cup_font.otf');
 }
 
@@ -102,13 +102,13 @@ header {
     height: 100px;
 }
 
-.goalBar{
-    opacity:0.6;
+.goalBar {
+    opacity: 0.6;
 }
 
-.goalCircle{
+.goalCircle {
     stroke-width: 3px;
-    r:5;
+    r: 5;
 }
 
 
@@ -151,5 +151,4 @@ header {
     padding: 0.5em;
     float: left;
 }
-
 
