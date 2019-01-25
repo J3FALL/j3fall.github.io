@@ -20,8 +20,31 @@ class InfoPanel {
         // Hint: For the list of teams, you can create an list element for each team.
         // Hint: Select the appropriate ids to update the text content.
 
-        //Set Labels
+        d3.select('#details').select('#edition')
+            .text(oneWorldCup.EDITION);
+        d3.select('#details').select('#host')
+            .text(oneWorldCup.host);
+        d3.select('#details').select('#winner')
+            .text(oneWorldCup.winner);
+        d3.select('#details').select('#silver')
+            .text(oneWorldCup.runner_up);
 
+
+        updateListOfTeams();
+
+        function updateListOfTeams() {
+            d3.select('#details').select('#teams')
+                .select('ul')
+                .remove();
+
+            //Set Labels
+            d3.select('#details').select('#teams')
+                .append('ul').selectAll('li')
+                .data(oneWorldCup.teams_names)
+                .enter()
+                .append('li')
+                .html(String);
+        }
     }
 
 }
