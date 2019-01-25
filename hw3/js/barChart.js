@@ -11,6 +11,7 @@ class BarChart {
         this.worldMap = worldMap;
         this.infoPanel = infoPanel;
         this.allData = allData;
+        this.currentDim = 'attendance';
     }
 
     /**
@@ -20,7 +21,7 @@ class BarChart {
 
 
         // ******* TODO: PART I *******
-
+        this.currentDim = selectedDimension;
         this.allData.sort(function (x, y) {
             return d3.ascending(x.year, y.year);
         });
@@ -87,37 +88,21 @@ class BarChart {
                 .enter().append('rect')
                 .attr('class', 'bar')
                 .attr('width', yWidth)
-                .attr('height', function (d) {
-                    return h - margin.top - margin.bottom - yScale(d[selectedDimension]);
-                })
-                .attr('x', function (d) {
-                    return (margin.left + xScale(d.year));
-                })
-                .attr('y', function (d) {
-                    return xScale(d[selectedDimension]);
-                })
-                .style('fill', function (d) {
-                    return color(d[selectedDimension])
-                })
-                .on("click", barChart.chooseData);
+                .attr('height', d => h - margin.top - margin.bottom - yScale(d[selectedDimension]))
+                .attr('x', d => margin.left + xScale(d.year))
+                .attr('y', d => yScale(d[selectedDimension]))
+                .style('fill', d => color(d[selectedDimension]))
+                .on("click", barChart.highlightSelected);
 
             //do it another time just to animate
             svg.select('#bars').selectAll('rect.bar')
                 .transition().duration(300)
                 .attr('class', 'bar')
                 .attr('width', yWidth)
-                .attr('height', function (d) {
-                    return h - margin.top - margin.bottom - yScale(d[selectedDimension]);
-                })
-                .attr('x', function (d) {
-                    return (margin.left + xScale(d.year));
-                })
-                .attr('y', function (d) {
-                    return yScale(d[selectedDimension]);
-                })
-                .style('fill', function (d) {
-                    return color(d[selectedDimension])
-                });
+                .attr('height', d => h - margin.top - margin.bottom - yScale(d[selectedDimension]))
+                .attr('x', d => margin.left + xScale(d.year))
+                .attr('y', d => yScale(d[selectedDimension]))
+                .style('fill', d => color(d[selectedDimension]));
         }
 
 
@@ -139,25 +124,52 @@ class BarChart {
      *  There are 4 attributes that can be selected:
      *  goals, matches, attendance and teams.
      */
-    chooseData(data) {
+    chooseData(data, selectedDimension) {
         // ******* TODO: PART I *******
         //Changed the selected data when a user selects a different
         // menu item from the drop down.
-        //infoPanel.updateInfo(data);
-        //worldMap.updateMap(data);
+        console.log(this);
+        barChart.infoPanel.updateInfo(data);
+        barChart.worldMap.updateMap(data);
+
         console.log(data[selectedDimension]);
-        d3.select('.selected')
-        // classed for css add/removal
-        //.classed('bar', true)
-            .classed('selected', false)
-            .style('fill', function (d) {
-                return color(d[selectedDimension])
-            });
+        // d3.select('.selected')
+        //     .classed('selected', false)
+        //     .style('fill', function (d) {
+        //         return color(d[selectedDimension])
+        //     });
 
         d3.select(this)
             .classed('bar', false)
             .classed('selected', true)
             .style('fill', '#d20a11');
+
+    }
+
+    highlightSelected(rect) {
+
+        fillByDefaultColor();
+        fillSelected(this);
+        barChart.infoPanel.updateInfo(rect);
+        barChart.worldMap.updateMap(rect);
+
+
+        function fillByDefaultColor() {
+            d3.select('.selected')
+                .classed('selected', false)
+                .classed('bar', true)
+                .style('fill', function (d) {
+                    return color(d[barChart.currentDim])
+                });
+
+        }
+
+        function fillSelected(barChart) {
+            d3.select(barChart)
+                .classed('selected', true)
+                .style('fill', '#d20a11');
+        }
+
 
     }
 }
