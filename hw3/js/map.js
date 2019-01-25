@@ -13,12 +13,12 @@ class Map {
     clearMap() {
 
         // ******* TODO: PART V*******
-        // Clear the map of any colors/markers; You can do this with inline styling or by
-        // defining a class style in styles.css
-
-        // Hint: If you followed our suggestion of using classes to style
-        // the colors and markers for hosts/teams/winners, you can use
-        // d3 selection and .classed to set these classes on and off here.
+        var color = d3.select('#map').selectAll('.countries');
+        color.attr('class', 'countries');
+        color.classed('host', false);
+        color.classed('team', false);
+        color.classed('countries', true);
+        d3.selectAll('#finalist').remove();
 
     }
 
@@ -32,6 +32,43 @@ class Map {
         this.clearMap();
 
         // ******* TODO: PART V *******
+
+        colorParticipants();
+        colorHost();
+
+
+        function colorHost() {
+            var hostId = '#' + worldcupData.host_country_code;
+            d3.select('#map').select(hostId)
+                .attr('class', 'countries host');
+        }
+
+
+        function colorParticipants() {
+            var teams = worldcupData.TEAM_LIST.split(',');
+            teams.forEach(function (team) {
+                d3.select(('#' + team))
+                    .classed('team', true);
+            });
+
+        }
+
+        // mark finalists
+        d3.select('#map').selectAll('circle')
+            .data([worldcupData.WIN_LON, worldcupData.WIN_LAT]).enter().append("circle")
+            .attr("r", '5px')
+            .attr('class', 'gold')
+            .attr('id', 'finalist')
+            .attr("transform", () => "translate(" +
+                this.projection([worldcupData.WIN_LON, worldcupData.WIN_LAT]) + ")");
+
+        d3.select('#map').append("circle")
+            .attr("r", '5px')
+            .attr('class', 'silver')
+            .attr('id', 'finalist')
+            .attr("transform", () => "translate(" +
+                this.projection([worldcupData.RUP_LON, worldcupData.RUP_LAT]) + ")");
+
 
         // Add a marker for the winner and runner up to the map.
 
@@ -68,7 +105,6 @@ class Map {
             .attr('width', 1000)
             .attr('height', 500);
 
-        console.log("1");
         map.selectAll('path')
             .data(topojson.feature(world, world.objects.countries).features)
             .enter()
